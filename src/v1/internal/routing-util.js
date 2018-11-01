@@ -61,7 +61,8 @@ export default class RoutingUtil {
   parseTtl(record, routerAddress) {
     try {
       const now = int(Date.now());
-      const expires = record.get('ttl').multiply(1000).add(now);
+      const ttl = record.get('ttl');
+      const expires = (typeof ttl === 'number' ? int(ttl) : ttl).multiply(1000).add(now);
       // if the server uses a really big expire time like Long.MAX_VALUE this may have overflowed
       if (expires.lessThan(now)) {
         return Integer.MAX_VALUE;
